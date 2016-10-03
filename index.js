@@ -43,6 +43,11 @@ app.post('/webhook/', function (req, res) {
             }
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
+        if (event.postback) {
+            let text = JSON.stringify(event.postback)
+            sendTextMessage(sender, "Postback received: "+text.substring(0, 200))
+            continue
+        }
     }
     res.sendStatus(200)
 })
@@ -51,6 +56,7 @@ const token = process.env.PAGE_ACCESS_TOKEN
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
+    console.log('sender is:', sender)
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
