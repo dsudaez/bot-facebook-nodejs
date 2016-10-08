@@ -38,14 +38,14 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             let text = event.message.text
             if (text === 'Generic') {
-                sendGenericMessage(sender)
+                responseTextMessage(sender)
                 continue
             }
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            responseTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
             let text = JSON.stringify(event.postback)
-            sendTextMessage(sender, "Postback received: "+text.substring(0, 200))
+            responseTextMessage(sender, "Postback received: "+text.substring(0, 200))
             continue
         }
     }
@@ -54,27 +54,13 @@ app.post('/webhook/', function (req, res) {
 
 const token = process.env.PAGE_ACCESS_TOKEN
 
-function sendTextMessage(sender, text) {
+function responseTextMessage(sender, text) {
     let messageData = { text:text }
-    console.log('sender is:', sender)
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
+    sendMessage(sender,messageData);
 }
 
-function sendGenericMessage(sender) {
+
+function responseGenericMessage(sender) {
     let messageData = {
         "attachment": {
             "type": "template",
@@ -106,6 +92,10 @@ function sendGenericMessage(sender) {
             }
         }
     }
+    sendMessage(sender,messageData);
+}
+
+function sendMessage(sender,messageData){
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
