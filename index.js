@@ -44,7 +44,7 @@ app.post('/webhook/', function (req, res) {
         if (event.postback) {
             //responseGenericMessage(sender)
             let text = JSON.stringify(event.postback)
-            responseTextMessage(sender, "Postback received: "+text.substring(0, 200))
+            responseTextMessage(sender, text.substring(0, 200))
             continue
         }
     }
@@ -60,12 +60,16 @@ function launchResponseByReservedWord(sender,text){
                 message = getTemplateMunicipio();
                 break;
             case 'novedades':
+                
                 break;
             case 'ambiente':
+                message = getTemplateAmbiente();
                 break;
             case 'transito':
+                message = getTemplateTransito();
                 break;
             case 'empleo':
+                message = getTemplateEmpleo();
                 break;
             default:
         }
@@ -78,6 +82,25 @@ function responseTextMessage(sender, text) {
 }
 
 
+function sendMessage(sender,messageData){
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token:token},
+        method: 'POST',
+        json: {
+            recipient: {id:sender},
+            message: messageData,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
+
+/*Templates*/
 function getTemplateMunicipio() {
     let messageData = {
         "attachment": {
@@ -104,20 +127,104 @@ function getTemplateMunicipio() {
     return messageData;
 }
 
-function sendMessage(sender,messageData){
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
+function getTemplateAmbiente() {
+    let messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Ambiente",
+                    "subtitle": "Ambiente",
+                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "buttons": [{
+                        "type": "postback",
+                        "title": "Horarios de Recolección",
+                        "payload": "Lista de horarios de recolección",
+                    }, {
+                        "type": "postback",
+                        "title": "Puntos verdes",
+                        "payload": "Lugares donde tirar residuos específicos",
+                    }, {
+                        "type": "postback",
+                        "title": "Jaque",
+                        "payload": "Devuelve horarios de atención",
+                    }
+                    ],
+                }]
+            }
         }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
+    }
+
+    return messageData;
+}
+
+function getTemplateTransito() {
+    let messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Municipios",
+                    "subtitle": "Municipios",
+                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "buttons": [{
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "Cómo obtengo mi Carnet"
+                    }, {
+                        "type": "postback",
+                        "title": "Horarios de Atención",
+                        "payload": "Lista de horarios de Atención",
+                    }, {
+                        "type": "postback",
+                        "title": "Multas",
+                        "payload": "Descripción de Multas",
+                    }
+                    ],
+                }]
+            }
         }
-    })
+    }
+    return messageData;
+}
+
+function getTemplateEmpleo() {
+    let messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Empleo",
+                    "subtitle": "Empleo",
+                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "buttons": [{
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "¿Sos emprendedor?"
+                    }, {
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "¿Buscás empleo?"
+                    }]
+                }]
+            }
+        }
+    }
+    return messageData;
+}
+
+
+function getTemplateEmpleo() {
+    let messageData = {
+        "attachment": {
+            "type": "image",
+            "payload": {
+                "url":"https://upload.wikimedia.org/wikipedia/commons/0/00/Bumblebee_on_Lavender_Blossom.JPG"
+            }
+        }
+    }
+    return messageData;
 }
