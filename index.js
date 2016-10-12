@@ -60,7 +60,7 @@ function launchResponseByReservedWord(sender,text){
                 message = getTemplateMunicipio();
                 break;
             case 'novedades':
-                
+                message = getTemplateNovedades();
                 break;
             case 'ambiente':
                 message = getTemplateAmbiente();
@@ -217,7 +217,7 @@ function getTemplateEmpleo() {
 }
 
 
-function getTemplateEmpleo() {
+function getTemplateNovedades() {
     let messageData = {
         "attachment": {
             "type": "image",
