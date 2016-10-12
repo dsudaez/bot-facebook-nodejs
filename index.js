@@ -35,18 +35,16 @@ app.post('/webhook/', function (req, res) {
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
         let sender = event.sender.id
+
         if (event.message && event.message.text) {
             let text = event.message.text
-            if (text === 'Generic') {
-                responseGenericMessage(sender)
-                continue
-            }
-            responseTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            launchResponseByReservedWord(sender, text.substring(0,200))
+            continue
         }
         if (event.postback) {
-            responseGenericMessage(sender)
-            // let text = JSON.stringify(event.postback)
-            // responseTextMessage(sender, "Postback received: "+text.substring(0, 200))
+            //responseGenericMessage(sender)
+            let text = JSON.stringify(event.postback)
+            responseTextMessage(sender, "Postback received: "+text.substring(0, 200))
             continue
         }
     }
@@ -55,45 +53,55 @@ app.post('/webhook/', function (req, res) {
 
 const token = process.env.PAGE_ACCESS_TOKEN
 
+function launchResponseByReservedWord(sender){
+    let message;
+        switch(){
+            case 'municipio':
+                message = getTemplateMunicipio();
+                break;
+            case 'novedades':
+                break;
+            case 'ambiente':
+                break;
+            case 'transito':
+                break;
+            case 'empleo':
+                break;
+            default:
+        }
+        sendMessage(sender, message)
+}
+
 function responseTextMessage(sender, text) {
     let messageData = { text:text }
     sendMessage(sender,messageData);
 }
 
 
-function responseGenericMessage(sender) {
+function getTemplateMunicipio() {
     let messageData = {
         "attachment": {
             "type": "template",
             "payload": {
                 "template_type": "generic",
                 "elements": [{
-                    "title": "First card",
-                    "subtitle": "Element #1 of an hscroll",
+                    "title": "Municipios",
+                    "subtitle": "Municipios",
                     "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
                     "buttons": [{
                         "type": "web_url",
                         "url": "https://www.messenger.com",
-                        "title": "web url"
+                        "title": "Direcciones"
                     }, {
                         "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for first element in a generic bubble",
-                    }],
-                }, {
-                    "title": "Second card",
-                    "subtitle": "Element #2 of an hscroll",
-                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                    "buttons": [{
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for second element in a generic bubble",
+                        "title": "Horarios de Atención",
+                        "payload": "Lista de horarios de Atención",
                     }],
                 }]
             }
         }
     }
-    sendMessage(sender,messageData);
+    return messageData;
 }
 
 function sendMessage(sender,messageData){
