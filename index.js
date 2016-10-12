@@ -53,9 +53,9 @@ app.post('/webhook/', function (req, res) {
 
 const token = process.env.PAGE_ACCESS_TOKEN
 
-function launchResponseByReservedWord(sender){
+function launchResponseByReservedWord(sender,text){
     let message;
-        switch(){
+        switch(text){
             case 'municipio':
                 message = getTemplateMunicipio();
                 break;
