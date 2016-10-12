@@ -110,7 +110,7 @@ function getTemplateMunicipio() {
                 "elements": [{
                     "title": "Municipios",
                     "subtitle": "Municipios",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7f/RIFLE_CITY_COUNCIL_MEETING_-_NARA_-_552618.jpg",
                     "buttons": [{
                         "type": "web_url",
                         "url": "https://www.messenger.com",
@@ -136,7 +136,7 @@ function getTemplateAmbiente() {
                 "elements": [{
                     "title": "Ambiente",
                     "subtitle": "Ambiente",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Salomon_van_Ruysdael_-_River_Landscape_-_WGA20566.jpg",
                     "buttons": [{
                         "type": "postback",
                         "title": "Horarios de Recolección",
@@ -166,9 +166,9 @@ function getTemplateTransito() {
             "payload": {
                 "template_type": "generic",
                 "elements": [{
-                    "title": "Municipios",
-                    "subtitle": "Municipios",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "title": "Transito",
+                    "subtitle": "Transito",
+                    "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/2008-07-11_Chapel_Hill_bus_passing_South_Building.jpg",
                     "buttons": [{
                         "type": "web_url",
                         "url": "https://www.messenger.com",
@@ -199,7 +199,7 @@ function getTemplateEmpleo() {
                 "elements": [{
                     "title": "Empleo",
                     "subtitle": "Empleo",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Operator_Lapangan.jpg",
                     "buttons": [{
                         "type": "web_url",
                         "url": "https://www.messenger.com",
